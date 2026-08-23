@@ -1,0 +1,29 @@
+openapi: 3.1.0
+info: {title: DX-DevTeam Control Plane API, version: 1.0.0}
+servers: [{url: http://localhost:3001}]
+security: [{bearerAuth: []}]
+paths:
+  /healthz: {get: {security: [], responses: {'200': {description: Liveness}}}}
+  /readyz: {get: {security: [], responses: {'200': {description: PostgreSQL readiness}, '503': {$ref: '#/components/responses/Error'}}}}
+  /metrics: {get: {responses: {'200': {description: Prometheus metrics}}}}
+  /v1/projects:
+    post: {requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/ProjectCreate'}}}}, responses: {'201': {description: Created}, '400': {$ref: '#/components/responses/Error'}}}
+  /v1/projects/{projectId}/requirements:
+    post: {parameters: [{$ref: '#/components/parameters/ProjectId'}, {$ref: '#/components/parameters/IdempotencyKey'}], requestBody: {required: true, content: {application/json: {schema: {$ref: '#/components/schemas/RequirementCreate'}}}}, responses: {'201': {description: Created or idempotently replayed}, '409': {$ref: '#/components/responses/Error'}}}
+  /v1/runs:
+    post: {parameters: [{$ref: '#/components/parameters/IdempotencyKey'}], requestBody: {required: true, content: {application/json: {schema: {type: object, additionalProperties: false, required: [requirementId], properties: {requirementId: {type: string, format: uuid}}}}}}, responses: {'201': {description: Run started}}}
+  /v1/runs/{runId}/lease: {post: {parameters: [{$ref: '#/components/parameters/RunId'}], responses: {'200': {description: Lease acquired}, '409': {$ref: '#/components/responses/Error'}}}}
+  /v1/runs/{runId}/stages/{stageId}/complete: {post: {parameters: [{$ref: '#/components/parameters/RunId'}, {name: stageId, in: path, required: true, schema: {type: string, format: uuid}}], responses: {'200': {description: Stage completed}, '409': {$ref: '#/components/responses/Error'}}}}
+  /v1/dashboard: {get: {responses: {'200': {description: Persisted project/run/stage/audit snapshot}}}}
+components:
+  securitySchemes: {bearerAuth: {type: http, scheme: bearer}}
+  parameters:
+    ProjectId: {name: projectId, in: path, required: true, schema: {type: string, format: uuid}}
+    RunId: {name: runId, in: path, required: true, schema: {type: string, format: uuid}}
+    IdempotencyKey: {name: Idempotency-Key, in: header, required: true, schema: {type: string, minLength: 8, maxLength: 200}}
+  schemas:
+    ProjectCreate: {type: object, additionalProperties: false, required: [name], properties: {name: {type: string, minLength: 1, maxLength: 120}}}
+    RequirementCreate: {type: object, additionalProperties: false, required: [statement, acceptanceCriteria], properties: {statement: {type: string, minLength: 10, maxLength: 10000}, acceptanceCriteria: {type: array, minItems: 1, maxItems: 100, items: {type: string}}}}
+    Error: {type: object, required: [contractVersion, error, requestId], properties: {contractVersion: {const: v1}, requestId: {type: string}, error: {type: object, required: [code, message], properties: {code: {type: string}, message: {type: string}, details: {}}}}}
+  responses:
+    Error: {description: Versioned fail-closed error, content: {application/json: {schema: {$ref: '#/components/schemas/Error'}}}}

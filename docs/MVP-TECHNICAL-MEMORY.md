@@ -93,7 +93,11 @@ Each evidence record contains: requirement ID, task ID, producing agent and vers
 
 A change is incomplete if an unfamiliar engineer cannot understand, reproduce, operate, audit, troubleshoot, roll back, and continue it. Documentation drift is a release-blocking defect.
 
-## Next implementation increment
+## M1 durable increment (delivered 2026-08-23)
+
+M1 now provides durable PostgreSQL contracts, intake, run/state persistence, leases, idempotency, append-only audit/outbox, restart repair, and persisted portal visibility. See `docs/requirements/M1-TRACEABILITY.md`. Identity/RBAC and outbox dispatch remain release-blocking limitations.
+
+## Original next implementation increment
 
 1. Persist project, requirement, run, stage, agent, finding, gate, and evidence records.
 2. Implement the durable orchestration state machine and worker lease protocol.
