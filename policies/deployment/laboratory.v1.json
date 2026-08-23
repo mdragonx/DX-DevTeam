@@ -1,0 +1,5 @@
+{
+  "schemaVersion": "deployment-policy.v1",
+  "environments": { "laboratory": ["dx-control-plane-lab"] },
+  "operations": ["DEPLOY_CANARY", "PROMOTE", "CANCEL", "ROLLBACK", "INSPECT"]
+}
