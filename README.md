@@ -1,30 +1,19 @@
 # Autonomous Development Control Plane
 
-An evidence-driven control plane for autonomous software delivery.
+An evidence-driven control plane for autonomous software delivery. M1 adds a production-oriented laboratory vertical slice: durable PostgreSQL intake and workflow state, deterministic stage leasing/transitions, append-only audit/outbox records, and persisted portal visibility. It does not invoke models or mutate external delivery systems.
 
-This repository currently contains the v0.1 vertical-slice web application. It demonstrates requirement intake, specialist composition, adversarial self-review, automatic correction, release gates, and evidence visibility. Integrations are represented but not yet connected.
+## Boundaries
 
-## Documentation
+- `apps/web`: persisted portal components (the root `app` remains the vinext compatibility entry)
+- `apps/api`: authenticated HTTP control-plane boundary
+- `services/orchestrator`: transactional state machine, leases, recovery
+- `packages/contracts`: strict versioned external/domain schemas
+- `packages/evidence`: canonical content digests
+- `packages/database`: PostgreSQL connectivity and transactions
+- `infra`: migrations and pinned laboratory PostgreSQL definition
 
-- [MVP technical memory](docs/MVP-TECHNICAL-MEMORY.md)
+See [M1 traceability](docs/requirements/M1-TRACEABILITY.md), [operations](docs/operations/M1-RUNBOOK.md), [OpenAPI](docs/api/openapi.yaml), [data model](docs/architecture/M1-DATA-MODEL.md), [threat model](docs/security/THREAT-MODEL.md), and [known limitations](docs/KNOWN-LIMITATIONS.md).
 
-## Local development
+## Development and validation
 
-Requirements: Node.js 22.13 or newer.
-
-```bash
-npm ci
-npm run dev
-```
-
-## Validation
-
-```bash
-npm run build
-npm run lint
-```
-
-## Current boundary
-
-The web experience is functional; the autonomous execution shown in the interface is simulated. This release does not mutate Forgejo, OmniRoute, Docker Swarm, Portainer, or production infrastructure.
-
+Node.js 22.13+ is required. Run `npm ci`, then `npm run lint`, `npm run typecheck`, `npm run test:m1`, and `npm test`. PostgreSQL runtime instructions and rollback are in the operating runbook.

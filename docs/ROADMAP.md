@@ -9,7 +9,7 @@
 
 Exit: reproducible build and documented architecture baseline.
 
-## M1 — Durable control plane
+## M1 — Durable control plane (laboratory vertical slice delivered 2026-08-23)
 
 - PostgreSQL schema for projects, requirements, runs, stages, agents, findings, gates, and evidence.
 - API with strict schemas and idempotency.

@@ -40,3 +40,8 @@ next-env.d.ts
 /.sites-runtime/
 /outputs/
 /work/
+
+/tsconfig.tsbuildinfo
+
+# Generated visual evidence is kept outside Git; text evidence may remain.
+/docs/evidence/*.png

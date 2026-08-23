@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import { PersistedDashboard } from "../apps/web/src/persisted-dashboard";
 
 const stages = ["Intake", "Specify", "Design", "Build", "Verify", "Deliver"];
 const agents = [
@@ -31,21 +32,18 @@ function Icon({ name }: { name: "grid" | "project" | "agents" | "shield" | "docs
 }
 
 export default function Home() {
+  const [projectName, setProjectName] = useState("Customer Billing Portal");
   const [requirement, setRequirement] = useState("Create a secure customer portal where users can view invoices, download receipts, and update their billing details.");
   const [running, setRunning] = useState(false);
   const [progress, setProgress] = useState(3);
-  const [notice, setNotice] = useState("Autonomous run DX-104 is active");
+  const [notice, setNotice] = useState("Demonstration fixture — not an active autonomous run");
   const completeness = useMemo(() => Math.min(100, 42 + requirement.trim().length / 2), [requirement]);
-  function run() {
+  async function run() {
     if (!requirement.trim()) return;
-    setRunning(true); setProgress(1); setNotice("Analyzing requirement and composing the team…");
-    let p = 1;
-    const timer = window.setInterval(() => {
-      p += 1; setProgress(p);
-      const messages = ["Normalizing acceptance criteria…", "Designing architecture and threat model…", "Building in isolated workspace…", "Critic found an issue; correction underway…", "Verifying evidence and release gates…"];
-      setNotice(messages[Math.min(p - 1, messages.length - 1)]);
-      if (p >= 6) { window.clearInterval(timer); setRunning(false); setNotice("Run DX-105 completed — all gates passed"); }
-    }, 720);
+    setRunning(true); setNotice("Persisting project, requirement, and run…");
+    const response = await fetch("/api/control-plane/intake", { method: "POST", headers: { "content-type": "application/json" }, body: JSON.stringify({ projectName, statement: requirement, acceptanceCriteria: ["Requirement is reviewed against an explicit specification"], idempotencyKey: crypto.randomUUID() }) });
+    if (!response.ok) { setRunning(false); setNotice("Delivery blocked: durable control plane rejected the request"); return; }
+    setNotice("Durable run created; awaiting orchestrator lease"); setProgress(1); setRunning(false); window.location.reload();
   }
   return (
     <main className="app-shell">
@@ -60,19 +58,20 @@ export default function Home() {
         </nav>
         <div className="sidebar-bottom">
           <a href="#settings"><Icon name="gear" />Settings</a>
-          <div className="system-status"><i></i><div><strong>Systems operational</strong><small>Swarm · Forgejo · OmniRoute</small></div></div>
+          <div className="system-status"><i></i><div><strong>Interface demonstration</strong><small>Integrations not connected</small></div></div>
         </div>
       </aside>
       <section className="content" id="overview">
         <header><div><span className="eyebrow">CONTROL PLANE / OVERVIEW</span><h1>Good evening, Fernando.</h1><p>Your autonomous engineering organization is operating within policy.</p></div><div className="header-actions"><button className="icon-btn" aria-label="Notifications">●</button><div className="avatar">FA</div></div></header>
         <section className="intake-card">
           <div className="intake-head"><div><span className="pulse"></span><strong>Start an autonomous delivery</strong></div><span>Natural language intake</span></div>
+          <input className="project-input" aria-label="Project name" value={projectName} onChange={e => setProjectName(e.target.value)} />
           <textarea aria-label="Product requirement" value={requirement} onChange={e => setRequirement(e.target.value)} />
           <div className="intake-foot"><div className="signals"><span>Specification {Math.round(completeness)}%</span><span>Risk: medium</span><span>Domain: fintech</span></div><button onClick={run} disabled={running || !requirement.trim()}>{running ? "Running…" : "Analyze & deliver"}<b>→</b></button></div>
         </section>
         <div className="status-strip"><span className={running ? "spinner" : "check"}>{running ? "" : "✓"}</span><strong>{notice}</strong><small>{running ? `Stage ${progress} of 6` : "Evidence-backed execution"}</small></div>
         <section className="workflow panel">
-          <div className="panel-title"><div><span className="label">ACTIVE DELIVERY</span><h2>Customer Billing Portal</h2><p>DX-104 · Started 8 minutes ago</p></div><button className="ghost">View workspace ↗</button></div>
+          <div className="panel-title"><div><span className="label">REPRESENTATIVE DELIVERY</span><h2>Customer Billing Portal</h2><p>DX-104 · Started 8 minutes ago</p></div><button className="ghost">View workspace ↗</button></div>
           <div className="stage-row">{stages.map((stage, i) => <div key={stage} className={`stage ${i < progress ? "done" : i === progress ? "current" : ""}`}><span>{i < progress ? "✓" : i + 1}</span><small>{stage}</small></div>)}</div>
           <div className="delivery-grid">
             <div><span className="metric-label">Requirements</span><strong>12 / 12</strong><div className="bar"><i style={{width:"100%"}} /></div><small>Machine-verifiable</small></div>
@@ -81,8 +80,9 @@ export default function Home() {
             <div><span className="metric-label">Evidence</span><strong>47</strong><div className="mini-note green">Complete chain</div><small>Commit → artifact → tests</small></div>
           </div>
         </section>
+        <PersistedDashboard />
         <div className="two-col">
-          <section id="agents" className="panel agents"><div className="section-head"><div><span className="label">TEAM COMPOSITION</span><h2>Specialist agents</h2></div><button className="text-btn">Agent Center →</button></div>
+          <section id="agents" className="panel agents"><div className="section-head"><div><span className="label">TEAM COMPOSITION</span><h2>Representative agents</h2></div><button className="text-btn">Agent Center →</button></div>
             <div className="agent-list">{agents.map(([code,name,work,status]) => <div className="agent" key={code}><span className="agent-avatar">{code}</span><div><strong>{name}</strong><small>{work}</small></div><i className={status}></i></div>)}</div>
             <div className="composer"><span>＋</span><div><strong>Agent Composer</strong><small>Created a fintech compliance specialist for this delivery</small></div><b>NEW</b></div>
           </section>
@@ -91,7 +91,7 @@ export default function Home() {
           </section>
         </div>
         <section id="evidence" className="bottom-grid">
-          <div className="score-card"><div className="ring"><strong>94</strong><small>/ 100</small></div><div><span className="label">DELIVERY CONFIDENCE</span><h3>Evidence supports release</h3><p>Two gates remain before autonomous deployment.</p></div></div>
+          <div className="score-card"><div className="ring"><strong>94</strong><small>/ 100</small></div><div><span className="label">DELIVERY CONFIDENCE</span><h3>Fixture only — no release decision</h3><p>Two gates remain before autonomous deployment.</p></div></div>
           <div className="gate-card"><span>SECURITY</span><strong>No critical findings</strong><small>1 issue detected and auto-corrected</small></div>
           <div className="gate-card"><span>DOCUMENTATION</span><strong>Continuity gate passed</strong><small>7 technical artifacts generated</small></div>
         </section>
