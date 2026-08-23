@@ -1,5 +1,10 @@
 # Changelog
 
+## Unreleased
+
+- Stabilize clean-checkout configuration, cancellation, required-check mapping, webhook claiming, and durable redaction behavior.
+- Add runnable non-root worker and API images, aligned health probes, validated immutable deployment substitutions, CI/security workflows, and P0 traceability/governance documentation.
+
 ## 0.5.0 - 2026-08-23
 
 - Added an allowlisted laboratory Swarm adapter and replay-safe deployment controller with required artifact validation, canary health/function/SLO promotion, cancellation, exact rollback, and database recovery hooks.

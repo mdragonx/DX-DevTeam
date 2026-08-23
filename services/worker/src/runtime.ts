@@ -12,7 +12,9 @@ export class IsolatedWorker {
     const expiresAt = new Date(manifest.expiresAt);
     if (!await this.leases.acquire(manifest.jobId, this.workerId, expiresAt)) throw new Error("Job lease unavailable");
     const controller = new AbortController();
-    const onCancel = () => controller.abort("cancelled"); cancellation?.addEventListener("abort", onCancel, { once: true });
+    const onCancel = () => controller.abort("cancelled");
+    if (cancellation?.aborted) onCancel();
+    else cancellation?.addEventListener("abort", onCancel, { once: true });
     const timer = setTimeout(() => controller.abort("expired"), Math.max(0, expiresAt.getTime() - Date.now()));
     const results: CommandResult[] = []; let outcome: AttemptRecord["outcome"] = "SUCCEEDED"; const findings: string[] = [];
     try {
@@ -24,9 +26,9 @@ export class IsolatedWorker {
         if (result.exitCode !== 0) { outcome = "FAILED"; findings.push(`Command failed: ${command[0]} (${result.exitCode})`); break; }
       }
       if (controller.signal.aborted) outcome = controller.signal.reason === "expired" ? "EXPIRED" : "CANCELLED";
-    } catch (error) { outcome = controller.signal.aborted && controller.signal.reason === "expired" ? "EXPIRED" : controller.signal.aborted ? "CANCELLED" : "FAILED"; findings.push(error instanceof Error ? error.message : "Worker crashed"); }
+    } catch { outcome = controller.signal.aborted && controller.signal.reason === "expired" ? "EXPIRED" : controller.signal.aborted ? "CANCELLED" : "FAILED"; findings.push("Executor failed; diagnostic details were withheld"); }
     finally { clearTimeout(timer); cancellation?.removeEventListener("abort", onCancel); }
-    const record = { attempt, outcome, results, findings } as const;
+    const record = { attempt, outcome, results, findings: findings.map((finding) => redactSecrets(finding).value) } as const;
     try { await this.preserve(manifest.jobId, record); }
     finally { await this.leases.release(manifest.jobId, this.workerId, outcome); }
     return record;

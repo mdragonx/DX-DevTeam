@@ -11,8 +11,11 @@ export class ForgejoWebhookHandler {
     const expected = createHmac("sha256", this.secret).update(request.timestamp).update(".").update(request.body).digest("hex");
     const supplied = request.signature.replace(/^sha256=/, "");
     if (supplied.length !== expected.length || !timingSafeEqual(Buffer.from(supplied), Buffer.from(expected))) throw new Error("Invalid webhook signature");
+    let payload: unknown;
+    try { payload = JSON.parse(Buffer.from(request.body).toString("utf8")); }
+    catch { throw new Error("Invalid webhook JSON"); }
     const claimed = await this.store.claim(request.deliveryId, `sha256:${expected}`, now);
     if (!claimed) return { duplicate: true };
-    return { duplicate: false, payload: JSON.parse(Buffer.from(request.body).toString("utf8")) };
+    return { duplicate: false, payload };
   }
 }

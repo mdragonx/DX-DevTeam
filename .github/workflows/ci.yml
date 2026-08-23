@@ -1,0 +1,43 @@
+name: continuously-verified-baseline
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  baseline:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22.13.1, cache: npm }
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+      - run: npm run test:m1 && npm run test:m2 && npm run test:m3 && npm run test:m4 && npm run test:m5 && npm run test:p0
+      - run: npm run build
+      - run: npm run test:fresh-checkout
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: baseline-results, path: "dist", retention-days: 30, if-no-files-found: warn }
+  containers:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t dx-api:test .
+      - run: docker build -t dx-worker:test -f infra/worker/Dockerfile .
+      - name: Smoke-test API health contract
+        run: |
+          docker run -d --name dx-api -p 3001:3001 -e CONTROL_PLANE_API_TOKEN=test -e DATABASE_URL=postgresql://invalid dx-api:test
+          for i in {1..20}; do curl -fsS http://127.0.0.1:3001/healthz && exit 0; sleep 1; done
+          docker logs dx-api; exit 1
+      - name: Smoke-test worker identity and health
+        run: |
+          docker run -d --name dx-worker -p 8080:8080 dx-worker:test
+          for i in {1..20}; do payload="$(curl -fsS http://127.0.0.1:8080/healthz || true)"; echo "$payload" | jq -e '.uid == 10001 and .gid == 10001' && exit 0; sleep 1; done
+          docker logs dx-worker; exit 1
+      - run: test "$(docker inspect -f '{{.Config.User}}' dx-worker:test)" = '10001:10001'

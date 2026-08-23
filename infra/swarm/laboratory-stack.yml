@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   api:
-    image: ghcr.io/example/dx-control-plane@sha256:1111111111111111111111111111111111111111111111111111111111111111
+    image: ${DX_API_IMAGE:?set DX_API_IMAGE to an immutable registry digest}
     networks: [edge, control]
     secrets: [database_password]
     configs: [api_policy]
@@ -10,7 +10,7 @@ services:
     read_only: true
     tmpfs: [/tmp]
     healthcheck:
-      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>{if(!r.ok)process.exit(1)})"]
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3001/healthz').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
       interval: 10s
       timeout: 3s
       retries: 3
@@ -27,7 +27,7 @@ services:
       update_config: { parallelism: 1, delay: 15s, order: start-first, failure_action: rollback, monitor: 30s }
       rollback_config: { parallelism: 1, delay: 5s, order: stop-first, monitor: 30s }
   postgres:
-    image: postgres@sha256:2222222222222222222222222222222222222222222222222222222222222222
+    image: ${DX_POSTGRES_IMAGE:?set DX_POSTGRES_IMAGE to an immutable registry digest}
     networks: [control]
     secrets: [database_password]
     volumes: [database:/var/lib/postgresql/data]

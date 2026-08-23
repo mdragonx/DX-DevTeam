@@ -10,7 +10,7 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
     "build": "bash scripts/build-verified.sh",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "npm run test:m1 && npm run test:m2 && npm run test:m3 && npm run test:m4 && npm run test:m5 && npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run test:m1 && npm run test:m2 && npm run test:m3 && npm run test:m4 && npm run test:m5 && npm run test:p0 && npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
     "typecheck": "bash scripts/sites-env.sh -- tsc --noEmit",
@@ -20,6 +20,9 @@
     "test:m3": "tsx --test tests/m3/*.test.ts",
     "test:m4": "tsx --test tests/m4/*.test.ts",
     "test:m5": "tsx --test tests/m5/*.test.ts"
+    ,"test:p0": "node --test tests/p0/*.test.mjs"
+    ,"format:check": "git diff --check && node scripts/validate-deployment-template.mjs"
+    ,"test:fresh-checkout": "bash scripts/test-fresh-checkout.sh"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
@@ -27,6 +30,7 @@
     "pg": "8.16.3",
     "react": "19.2.6",
     "react-dom": "19.2.6",
+    "tsx": "4.20.5",
     "zod": "4.1.5"
   },
   "devDependencies": {
@@ -44,7 +48,6 @@
     "eslint-config-next": "16.2.6",
     "react-server-dom-webpack": "19.2.6",
     "tailwindcss": "4.2.1",
-    "tsx": "4.20.5",
     "typescript": "5.9.3",
     "vinext": "0.0.50",
     "vite": "8.0.13",

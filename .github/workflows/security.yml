@@ -1,0 +1,51 @@
+name: security-and-supply-chain
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+  security-events: write
+  id-token: write
+  attestations: write
+  packages: write
+jobs:
+  secrets-dependencies-licenses:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+      - uses: actions/setup-node@v4
+        with: { node-version: 22.13.1, cache: npm }
+      - run: npm ci
+      - run: npm audit --audit-level=high
+      - run: npx --yes license-checker-rseidelsohn --production --failOn 'GPL;AGPL'
+  codeql:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with: { languages: javascript-typescript }
+      - uses: github/codeql-action/analyze@v3
+  scan-and-sbom:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t dx-api:${{ github.sha }} . && docker build -t dx-worker:${{ github.sha }} -f infra/worker/Dockerfile .
+      - uses: aquasecurity/trivy-action@master
+        with: { image-ref: "dx-api:${{ github.sha }}", format: sarif, output: api-trivy.sarif, severity: HIGH,CRITICAL, exit-code: 1 }
+      - uses: aquasecurity/trivy-action@master
+        with: { image-ref: "dx-worker:${{ github.sha }}", format: sarif, output: worker-trivy.sarif, severity: HIGH,CRITICAL, exit-code: 1 }
+      - uses: aquasecurity/trivy-action@master
+        with: { scan-type: config, scan-ref: infra, format: sarif, output: iac-trivy.sarif, severity: HIGH,CRITICAL, exit-code: 1 }
+      - uses: anchore/sbom-action@v0
+        with: { image: "dx-api:${{ github.sha }}", output-file: api-sbom.spdx.json }
+      - uses: anchore/sbom-action@v0
+        with: { image: "dx-worker:${{ github.sha }}", output-file: worker-sbom.spdx.json }
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with: { name: security-sbom-results, path: "*-trivy.sarif\n*-sbom.spdx.json", retention-days: 90 }
+      - uses: actions/attest-build-provenance@v2
+        if: startsWith(github.ref, 'refs/tags/rc-')
+        with: { subject-path: "*-sbom.spdx.json" }

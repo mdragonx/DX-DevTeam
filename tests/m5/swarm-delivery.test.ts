@@ -64,7 +64,7 @@ test("canonical Forgejo spec drift is visible and stack contains hardened primit
   const subject = setup(); assert.equal((await subject.adapter.inspectCanonical("laboratory", input.stack, [prior])).matches, true);
   subject.transport.current = [candidate]; assert.equal((await subject.adapter.inspectCanonical("laboratory", input.stack, [prior])).matches, false);
   const stack = readFileSync("infra/swarm/laboratory-stack.yml", "utf8");
-  for (const term of ["@sha256:", "internal: true", "external: true", "healthcheck:", "limits:", "placement:", "volumes:", "configs:"]) assert.match(stack, new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+  for (const term of ["DX_API_IMAGE:?", "DX_POSTGRES_IMAGE:?", "internal: true", "external: true", "healthcheck:", "limits:", "placement:", "volumes:", "configs:"]) assert.match(stack, new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
   assert.doesNotMatch(stack, /^\s*(?:POSTGRES_)?PASSWORD\s*:/im);
   assert.doesNotMatch(stack, /^\s*data\s*:/im);
 });
