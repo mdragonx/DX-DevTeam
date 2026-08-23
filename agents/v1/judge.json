@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "agent-definition.v1",
+  "id": "judge.v1",
+  "role": "judge",
+  "route": "judge",
+  "promptVersion": "judge.v1",
+  "capabilities": ["evidence_judgment"],
+  "prohibitedCapabilities": ["execute_code", "modify_repository", "change_policy", "access_credentials", "approve_own_output"],
+  "executionClass": "verifier",
+  "maxOutputTokens": 8000
+}

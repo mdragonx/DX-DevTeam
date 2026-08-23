@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "agent-definition.v1",
+  "id": "po.v1",
+  "role": "po",
+  "route": "requirements",
+  "promptVersion": "po.v1",
+  "capabilities": ["specification"],
+  "prohibitedCapabilities": ["execute_code", "modify_repository", "change_policy", "access_credentials", "approve_own_output"],
+  "executionClass": "author",
+  "maxOutputTokens": 8000
+}

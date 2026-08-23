@@ -1,6 +1,6 @@
 {
   "name": "autonomous-dev-control",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -10,12 +10,13 @@
     "dev": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vite",
     "build": "bash scripts/build-verified.sh",
     "start": "WRANGLER_LOG_PATH=.wrangler/wrangler.log vinext start",
-    "test": "npm run test:m1 && npm run build && node --test tests/rendered-html.test.mjs",
+    "test": "npm run test:m1 && npm run test:m2 && npm run build && node --test tests/rendered-html.test.mjs",
     "lint": "bash scripts/sites-env.sh -- eslint . --ignore-pattern dist --ignore-pattern .next",
     "db:generate": "bash scripts/sites-env.sh -- drizzle-kit generate",
     "typecheck": "bash scripts/sites-env.sh -- tsc --noEmit",
     "test:m1": "tsx --test tests/m1/*.test.ts",
-    "api": "tsx apps/api/src/server.ts"
+    "api": "tsx apps/api/src/server.ts",
+    "test:m2": "tsx --test tests/m2/*.test.ts"
   },
   "dependencies": {
     "drizzle-orm": "0.45.2",
