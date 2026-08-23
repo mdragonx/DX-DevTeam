@@ -34,3 +34,20 @@ All notable changes to DX-DevTeam are recorded here.
 ### Limitations
 
 - Fine-grained identity/RBAC and outbox dispatch are deferred. No LLM, Forgejo, Swarm, or production mutation exists.
+
+## [0.3.0] - 2026-08-23
+
+### Added
+
+- M2 provider-neutral OmniRoute adapter, seven logical routes, runtime-only HTTP configuration, classified retries, cancellation, circuit breaker, and task budgets.
+- Strict specification, implementation-plan, critic, and judge contracts with one syntax repair and fail-closed validation.
+- Versioned PO, Architect, Developer, Critic, Security, QA, and Judge definitions and a bounded reviewed-specification workflow.
+- Digest-only model telemetry and generated-artifact migrations, mock OmniRoute tests, manuals, prompt catalog, architecture, operations, threat, and traceability documentation.
+
+### Security
+
+- Untrusted-content envelopes prevent requirement text from changing trusted policy or capabilities; author/verifier model-family collisions and inconclusive judgments block runs.
+
+### Limitations
+
+- M2 produces plans only and does not execute generated code. Runtime dispatch wiring and provider identity attestation remain deferred.

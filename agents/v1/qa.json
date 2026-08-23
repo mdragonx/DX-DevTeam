@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "agent-definition.v1",
+  "id": "qa.v1",
+  "role": "qa",
+  "route": "critic",
+  "promptVersion": "qa.v1",
+  "capabilities": ["acceptance_review"],
+  "prohibitedCapabilities": ["execute_code", "modify_repository", "change_policy", "access_credentials", "approve_own_output"],
+  "executionClass": "verifier",
+  "maxOutputTokens": 8000
+}

@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "agent-definition.v1",
+  "id": "developer.v1",
+  "role": "developer",
+  "route": "code",
+  "promptVersion": "developer.v1",
+  "capabilities": ["implementation_plan"],
+  "prohibitedCapabilities": ["execute_code", "modify_repository", "change_policy", "access_credentials", "approve_own_output"],
+  "executionClass": "author",
+  "maxOutputTokens": 8000
+}

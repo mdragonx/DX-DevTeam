@@ -1,0 +1,11 @@
+{
+  "schemaVersion": "agent-definition.v1",
+  "id": "architect.v1",
+  "role": "architect",
+  "route": "architecture",
+  "promptVersion": "architect.v1",
+  "capabilities": ["implementation_plan"],
+  "prohibitedCapabilities": ["execute_code", "modify_repository", "change_policy", "access_credentials", "approve_own_output"],
+  "executionClass": "author",
+  "maxOutputTokens": 8000
+}

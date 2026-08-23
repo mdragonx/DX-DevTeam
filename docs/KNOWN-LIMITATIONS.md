@@ -7,3 +7,6 @@
 - Audit events are database append-only but not signed or exported to immutable storage.
 - The legacy overview cards remain clearly representative UI; the Persisted Deliveries panel is the authoritative PostgreSQL view and fails closed rather than substituting fixtures.
 - Migration rollback is destructive and requires a verified backup. Backup/restore automation is not included.
+- M2 supplies the adapter, durable schema, and reviewed-specification workflow, but does not wire an automatic outbox consumer into the API process; invocation remains an internal service operation.
+- Model/provider identity and token/cost telemetry are provider-reported and not cryptographically attested. Real-model production promotion remains blocked pending independent evaluation and signed evidence.
+- Generated code is neither requested nor executed in M2. Developer is planning-only despite the reserved `code` route.
