@@ -51,3 +51,14 @@ A change is done only when it is understandable, reproducible, testable, secure,
 - Evidence is content-addressed and references exact commits and artifact digests.
 - Agent definitions, expertise packages, prompts, policies, and evaluations are versioned.
 
+## Operational evidence rules
+
+- Read and obey `docs/PRODUCTION-READINESS-GATES.md` for any milestone, release, deployment or readiness claim.
+- Label every artifact as design (E0), simulated (E1), integrated laboratory (E2), release candidate (E3) or production canary (E4).
+- Interfaces, mocks, fakes, fixtures, in-memory stores, placeholder digests and unit tests cannot satisfy an operational exit criterion.
+- A milestone whose exit criterion names a real service must execute against that real service and retain content-addressed evidence.
+- A pull-request description, local self-report or LLM judgment is not CI or independent review evidence.
+- Do not merge a pull request before required CI passes on its final commit and an independent reviewer approves it.
+- Never mark a milestone complete while a relevant P0/P1 finding, review thread or mandatory gate remains unresolved.
+- When credentials, infrastructure, permissions or external services are unavailable, return `BLOCKED` with exact missing prerequisites; do not silently substitute mocks.
+- Production remains `NO_GO` unless the independent production-acceptance prompt returns `GO` for the exact release candidate.
