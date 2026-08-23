@@ -2,6 +2,11 @@
 
 ## 0.4.0 - 2026-08-23
 
+- Added normalized findings, bounded repair termination, immutable release policy evaluation, independent-role enforcement, and signed deterministic release decisions.
+- Added M4 seeded-defect and gate regression tests plus quality, security, incident, audit, traceability, and limitation documentation.
+
+## 0.3.0 - 2026-08-23
+
 - Add repository-scoped Forgejo operations and authenticated, timestamped, idempotent webhook handling.
 - Add signed content-addressed worker jobs, role execution separation, secret redaction, expiry/cancellation lease reclamation, and hardened container policy.
 - Add local-check-gated laboratory branch/commit/issue/PR workflow with complete evidence links and deterministic failure tests.
