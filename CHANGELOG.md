@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 - 2026-08-23
+
+- Added an allowlisted laboratory Swarm adapter and replay-safe deployment controller with required artifact validation, canary health/function/SLO promotion, cancellation, exact rollback, and database recovery hooks.
+- Added a declarative digest-pinned stack with isolated networks, external secrets/configs, volumes, health checks, placement, and resource limits.
+- Added M5 executable acceptance tests and deployment, rollback, backup, restore, disaster recovery, security, drift, and troubleshooting documentation.
+
 ## 0.4.0 - 2026-08-23
 
 - Added normalized findings, bounded repair termination, immutable release policy evaluation, independent-role enforcement, and signed deterministic release decisions.

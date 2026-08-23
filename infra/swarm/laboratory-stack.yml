@@ -1,0 +1,56 @@
+version: "3.9"
+
+services:
+  api:
+    image: ghcr.io/example/dx-control-plane@sha256:1111111111111111111111111111111111111111111111111111111111111111
+    networks: [edge, control]
+    secrets: [database_password]
+    configs: [api_policy]
+    volumes: [evidence:/var/lib/dx/evidence]
+    read_only: true
+    tmpfs: [/tmp]
+    healthcheck:
+      test: ["CMD", "node", "-e", "fetch('http://127.0.0.1:3000/health').then(r=>{if(!r.ok)process.exit(1)})"]
+      interval: 10s
+      timeout: 3s
+      retries: 3
+      start_period: 20s
+    deploy:
+      replicas: 2
+      placement:
+        constraints: [node.labels.dx.role == control]
+        preferences: [{ spread: node.labels.zone }]
+      resources:
+        limits: { cpus: "1.00", memory: 512M }
+        reservations: { cpus: "0.25", memory: 128M }
+      restart_policy: { condition: on-failure, delay: 5s, max_attempts: 3 }
+      update_config: { parallelism: 1, delay: 15s, order: start-first, failure_action: rollback, monitor: 30s }
+      rollback_config: { parallelism: 1, delay: 5s, order: stop-first, monitor: 30s }
+  postgres:
+    image: postgres@sha256:2222222222222222222222222222222222222222222222222222222222222222
+    networks: [control]
+    secrets: [database_password]
+    volumes: [database:/var/lib/postgresql/data]
+    environment:
+      POSTGRES_PASSWORD_FILE: /run/secrets/database_password
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    deploy:
+      placement: { constraints: [node.labels.dx.database == true] }
+      resources:
+        limits: { cpus: "2.00", memory: 2G }
+        reservations: { cpus: "0.50", memory: 512M }
+
+networks:
+  edge: { driver: overlay, attachable: false }
+  control: { driver: overlay, internal: true, attachable: false }
+volumes:
+  evidence: {}
+  database: {}
+secrets:
+  database_password: { external: true, name: dx_lab_database_password_v1 }
+configs:
+  api_policy: { external: true, name: dx_lab_api_policy_v1 }

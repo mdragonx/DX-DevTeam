@@ -45,13 +45,15 @@ Exit: the system independently modifies a laboratory repository and proves the r
 
 Exit: injected defects are detected, repaired, and protected by regression tests.
 
-## M5 — Swarm delivery
+## M5 — Swarm delivery (laboratory implementation delivered 2026-08-23)
 
 - Declarative Swarm stack.
 - Canary release, health verification, rollback, backup, and recovery.
 - Operational dashboards and alerts.
 
 Exit: an approved laboratory release is deployed and automatically rolled back on failed verification.
+
+The repository now contains the fail-closed adapter/controller contracts, dedicated stack, acceptance tests, and operating manuals. Live-cluster integration and a completed laboratory drill remain release gates; production is explicitly excluded.
 
 ## M6 — Expertise learning
 
@@ -60,4 +62,3 @@ Exit: an approved laboratory release is deployed and automatically rolled back o
 - Temporary and reusable domain specialists.
 
 Exit: a new specialist demonstrates competence before receiving task capabilities.
-
