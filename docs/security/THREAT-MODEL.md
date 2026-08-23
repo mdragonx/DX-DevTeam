@@ -20,3 +20,18 @@ Security disposition: suitable only for an authenticated laboratory network unti
 Model providers, model output, requirement text, and future repository content are untrusted. The adapter serializes content into a labelled data envelope; only versioned system prompts supply instructions. Agents have no execution, repository mutation, credential, policy, permission, or gate-changing capability. Strict schemas reject additional fields and semantic repair is forbidden. A single syntax-only repair limits parser recovery attacks. Prompt and raw content are excluded from telemetry; only digests and bounded operational metadata persist.
 
 Availability and spend attacks are bounded by deadline, call, token and cost budgets; cancellation, retry classification, stable idempotency keys, and circuit breaking. Author/critic/judge are separate calls and a known same model family is rejected. Provider-reported identity is not cryptographically attested, so production enablement remains blocked until OmniRoute identity claims and evidence-store attestations are independently verified.
+
+## M3 Forgejo and disposable-worker addendum
+
+| Threat | Control | Residual risk / response |
+|---|---|---|
+| Stolen service token mutates other repositories | Dedicated identity plus exact repository capability; laboratory topic and protected default branch | Forgejo token granularity varies; verify effective grants and revoke on anomaly |
+| Forged or replayed webhook changes state twice | HMAC over timestamp/raw body, five-minute window, constant-time comparison, atomic delivery-ID claim | Receipt storage must be durable and shared by API replicas |
+| Manifest tampering or stale job | Ed25519 signature, expiry, future-time bound, policy digest, content digests | Signing-key compromise requires quarantine and rotation |
+| Repository prompt injection changes policy | Repository text is delimited untrusted data; policy is externally signed; worker capabilities are fixed | Models can still propose unsafe patches; independent stages and checks remain mandatory |
+| Secret enters context, logs, patch, or evidence | Detection/redaction at every boundary and digest-only findings | Detectors are incomplete; quarantine raw artifacts and revoke exposed secrets |
+| Container reaches host or unauthorized network | Non-root, dropped capabilities, no-new-privileges, read-only root, limits, explicit volumes, no network, no Docker socket | Kernel/runtime flaws remain; patch and isolate worker nodes |
+| Worker crash, expiry, cancellation, or orphan | Abort, attempt preservation, lease release, disposable cleanup | Unproven cleanup quarantines the node and blocks rescheduling |
+| Author self-approves | Separate Developer, Critic, Security, and QA execution IDs; checks precede commit | Scheduler identity/model diversity is not cryptographically attested |
+
+M3 grants no merge, release, production-repository, infrastructure, or deployment capability. The portal cannot directly invoke Forgejo or workers.

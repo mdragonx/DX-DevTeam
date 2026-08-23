@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.4.0 - 2026-08-23
+
+- Add repository-scoped Forgejo operations and authenticated, timestamped, idempotent webhook handling.
+- Add signed content-addressed worker jobs, role execution separation, secret redaction, expiry/cancellation lease reclamation, and hardened container policy.
+- Add local-check-gated laboratory branch/commit/issue/PR workflow with complete evidence links and deterministic failure tests.
+- Add M3 traceability, worker protocol, installation, operations, troubleshooting, security consequences, limitations, and recovery documentation.
+
 All notable changes to DX-DevTeam are recorded here.
 
 ## [0.1.0] - 2026-08-22

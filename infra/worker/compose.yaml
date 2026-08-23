@@ -1,0 +1,21 @@
+services:
+  worker:
+    build: { context: ../.., dockerfile: infra/worker/Dockerfile }
+    user: "10001:10001"
+    read_only: true
+    cap_drop: [ALL]
+    security_opt: [no-new-privileges:true]
+    pids_limit: 128
+    mem_limit: 1g
+    cpus: 1.0
+    network_mode: none
+    tmpfs: [/tmp:size=64m,noexec,nosuid,nodev]
+    volumes:
+      - worker-input:/workspace/input:ro
+      - worker-output:/workspace/output:rw
+      - worker-repository:/workspace/repository:rw
+    stop_grace_period: 10s
+volumes:
+  worker-input: {}
+  worker-output: {}
+  worker-repository: {}
