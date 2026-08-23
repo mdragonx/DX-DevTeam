@@ -1,0 +1,10 @@
+{
+  "schemaVersion": "release-policy.v1",
+  "version": "1.0.0",
+  "mandatoryGates": ["unit", "integration", "contract", "end-to-end", "property", "mutation", "concurrency", "fault-injection", "recovery", "secrets", "sast", "sca", "license", "iac", "image", "sbom", "provenance", "dast"],
+  "blockingSeverities": ["critical", "high"],
+  "maxEvidenceAgeSeconds": 3600,
+  "requiredRoles": ["author", "critic", "security-reviewer", "qa-verifier", "release-judge"],
+  "requireDistinctExecutions": true,
+  "falsePositiveRequiresIndependentValidation": true
+}
