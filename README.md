@@ -1,6 +1,6 @@
 # Autonomous Development Control Plane
 
-An evidence-driven control plane for autonomous software delivery. M1 adds a production-oriented laboratory vertical slice: durable PostgreSQL intake and workflow state, deterministic stage leasing/transitions, append-only audit/outbox records, and persisted portal visibility. It does not invoke models or mutate external delivery systems.
+An evidence-driven control plane for autonomous software delivery. M3 adds a laboratory-only Forgejo adapter, authenticated replay-safe webhook boundary, signed isolated-worker protocol/runtime, secret redaction, and check-gated pull-request workflow. Autonomous merging and production deployment remain disabled.
 
 ## Boundaries
 
@@ -11,9 +11,12 @@ An evidence-driven control plane for autonomous software delivery. M1 adds a pro
 - `packages/evidence`: canonical content digests
 - `packages/database`: PostgreSQL connectivity and transactions
 - `infra`: migrations and pinned laboratory PostgreSQL definition
+- `services/forgejo`: repository-scoped Forgejo API and webhook boundary
+- `services/worker`: signed job protocol, redaction, expiry/cancellation, and attempt preservation
+- `services/delivery`: check-before-commit laboratory pull-request workflow
 
-See [M1 traceability](docs/requirements/M1-TRACEABILITY.md), [operations](docs/operations/M1-RUNBOOK.md), [OpenAPI](docs/api/openapi.yaml), [data model](docs/architecture/M1-DATA-MODEL.md), [threat model](docs/security/THREAT-MODEL.md), and [known limitations](docs/KNOWN-LIMITATIONS.md).
+See [M3 traceability](docs/requirements/M3-TRACEABILITY.md), [worker protocol](docs/architecture/M3-WORKER-PROTOCOL.md), [M3 operations](docs/operations/M3-RUNBOOK.md), [threat model](docs/security/THREAT-MODEL.md), and [known limitations](docs/KNOWN-LIMITATIONS.md).
 
 ## Development and validation
 
-Node.js 22.13+ is required. Run `npm ci`, then `npm run lint`, `npm run typecheck`, `npm run test:m1`, and `npm test`. PostgreSQL runtime instructions and rollback are in the operating runbook.
+Node.js 22.13+ is required. Run `npm ci`, then `npm run lint`, `npm run typecheck`, `npm run test:m3`, and `npm test`. M3 installation, least privilege, troubleshooting, and recovery are in its operating runbook.
