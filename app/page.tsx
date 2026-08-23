@@ -86,14 +86,14 @@ export default function Home() {
             <div className="agent-list">{agents.map(([code,name,work,status]) => <div className="agent" key={code}><span className="agent-avatar">{code}</span><div><strong>{name}</strong><small>{work}</small></div><i className={status}></i></div>)}</div>
             <div className="composer"><span>＋</span><div><strong>Agent Composer</strong><small>Created a fintech compliance specialist for this delivery</small></div><b>NEW</b></div>
           </section>
-          <section id="quality" className="panel activity"><div className="section-head"><div><span className="label">LIVE AUDIT TRAIL</span><h2>Critical activity</h2></div><button className="text-btn">All evidence →</button></div>
+          <section id="quality" className="panel activity"><div className="section-head"><div><span className="label">SIMULATED FIXTURE — NOT EVIDENCE</span><h2>Example critical activity</h2></div><button className="text-btn">Fixture details →</button></div>
             <div className="event-list">{events.map(([title,actor,desc,time],i) => <div className="event" key={title}><span className={`event-icon e${i}`}>{i===2?"↻":i===3?"✓":"◆"}</span><div><strong>{title}</strong><small>{desc}</small><em>{actor}</em></div><time>{time}</time></div>)}</div>
           </section>
         </div>
         <section id="evidence" className="bottom-grid">
           <div className="score-card"><div className="ring"><strong>94</strong><small>/ 100</small></div><div><span className="label">DELIVERY CONFIDENCE</span><h3>Fixture only — no release decision</h3><p>Two gates remain before autonomous deployment.</p></div></div>
-          <div className="gate-card"><span>SECURITY</span><strong>No critical findings</strong><small>1 issue detected and auto-corrected</small></div>
-          <div className="gate-card"><span>DOCUMENTATION</span><strong>Continuity gate passed</strong><small>7 technical artifacts generated</small></div>
+          <div className="gate-card"><span>SIMULATED SECURITY FIXTURE</span><strong>Example: no critical findings</strong><small>Not a scanner result or release evidence</small></div>
+          <div className="gate-card"><span>SIMULATED DOCUMENTATION FIXTURE</span><strong>Example: continuity gate passed</strong><small>Not a verified gate result</small></div>
         </section>
       </section>
     </main>

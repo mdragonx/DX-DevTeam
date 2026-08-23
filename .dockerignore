@@ -1,0 +1,7 @@
+.git
+.github
+node_modules
+.sites-runtime
+.wrangler
+coverage
+docs/evidence/*.png
