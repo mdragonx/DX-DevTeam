@@ -15,7 +15,7 @@
 | P0-09 | API liveness is `/healthz` on port 3001 in code, image, Swarm, and runbook. | API container smoke test | `Dockerfile`, `infra/swarm/laboratory-stack.yml` |
 | P0-10 | A production application image builds the web artifact and runs the API referenced by deployment. | production build and API image smoke test | root `Dockerfile`, CI `containers` |
 | P0-11 | Deployable templates contain no example/placeholder image and require explicit immutable image substitutions. | `npm run format:check`; negative validator test | `scripts/validate-deployment-template.mjs` |
-| P0-12 | Pull requests and `main` run reproducibility, quality, security, container, IaC, SBOM, and RC provenance jobs with retained artifacts. | GitHub Actions execution (external evidence required) | `.github/workflows/ci.yml`, `.github/workflows/security.yml` |
+| P0-12 | Pull requests and `main` run reproducibility, quality, security, container, IaC, and SBOM jobs; `rc-*` tags additionally run provenance with retained artifacts. | `npm run test:p0` validates the trigger/evidence contract; GitHub Actions execution remains external evidence | `.github/workflows/ci.yml`, `.github/workflows/security.yml` |
 | P0-13 | Required checks and one independent approval are configured and observed separately from documentation. | repository settings observation (external evidence required) | `docs/operations/REPOSITORY-CONFIGURATION.md` |
 
 ## Review-thread status
