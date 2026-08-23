@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Fixed
+
+- Trigger the security and supply-chain workflow for `rc-*` tags so its guarded release-candidate provenance step is reachable, with a P0 regression check for the trigger and retained evidence contract.
+
 - Stabilize clean-checkout configuration, cancellation, required-check mapping, webhook claiming, and durable redaction behavior.
 - Add runnable non-root worker and API images, aligned health probes, validated immutable deployment substitutions, CI/security workflows, and P0 traceability/governance documentation.
 

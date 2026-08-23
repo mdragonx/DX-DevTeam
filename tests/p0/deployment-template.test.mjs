@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { mkdtempSync, writeFileSync } from "node:fs";
+import { mkdtempSync, readFileSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { spawnSync } from "node:child_process";
@@ -16,4 +16,13 @@ test("unresolved and example image placeholders fail closed", () => {
     const result = spawnSync(process.execPath, [validator, file], { encoding: "utf8" });
     assert.notEqual(result.status, 0, `${image} must be rejected`);
   }
+});
+
+test("release-candidate tags generate retained SBOMs and provenance", () => {
+  const workflow = readFileSync(".github/workflows/security.yml", "utf8");
+  assert.match(workflow, /tags: \["rc-\*"\]/, "RC tags must trigger the supply-chain workflow");
+  assert.match(workflow, /retention-days: 90/, "security and SBOM evidence must be retained");
+  assert.match(workflow, /actions\/attest-build-provenance@v2/);
+  assert.match(workflow, /startsWith\(github\.ref, 'refs\/tags\/rc-'\)/);
+  assert.match(workflow, /subject-path: "\*-sbom\.spdx\.json"/);
 });
