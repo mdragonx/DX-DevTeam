@@ -35,3 +35,9 @@ Availability and spend attacks are bounded by deadline, call, token and cost bud
 | Author self-approves | Separate Developer, Critic, Security, and QA execution IDs; checks precede commit | Scheduler identity/model diversity is not cryptographically attested |
 
 M3 grants no merge, release, production-repository, infrastructure, or deployment capability. The portal cannot directly invoke Forgejo or workers.
+# M6 expertise-learning threats
+
+- Retrieved expertise sources are hostile inputs. The quarantine boundary verifies the registered digest and rejects detected instruction injection, revoked/obsolete material and claim conflicts before package use; deterministic detection is defense in depth, not a complete content-safety scanner.
+- Benchmark self-authorship, shared datasets and shared executions can manufacture competence. Promotion fails closed unless author/evaluator identities, dataset digests and execution identities are independent, and any critical regression blocks promotion.
+- Specialist definitions carry personality and expertise references only. Tool, credential, network, budget, policy and gate authority remains a control-plane decision and cannot be emitted by the composer.
+- Revocation and expiry can invalidate an in-flight decision. Routing must revalidate packages and claims at use time, invalidate dependants and retain the exact rollback target and evidence digest.

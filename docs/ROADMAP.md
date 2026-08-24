@@ -62,3 +62,5 @@ The repository now contains the fail-closed adapter/controller contracts, dedica
 - Temporary and reusable domain specialists.
 
 Exit: a new specialist demonstrates competence before receiving task capabilities.
+
+The repository now contains E1 contract and deterministic lifecycle coverage for composition, quarantined sources, independent evaluation, promotion, expiry, revocation, canary monitoring and exact rollback. M6 remains blocked at its exit: no real laboratory specialist lifecycle or independently retained E2 evidence was available in this environment.

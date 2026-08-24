@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+### Added
+
+- Add M6 versioned specialist, expertise, source and evaluation contracts; quarantined ingestion; capability-gap composition; independent promotion governance; expiry/revocation; and exact canary rollback with adversarial E1 tests and a clearly labelled portal status view.
+
 ### Fixed
 
 - Trigger the security and supply-chain workflow for `rc-*` tags so its guarded release-candidate provenance step is reachable, with a P0 regression check for the trigger and retained evidence contract.
