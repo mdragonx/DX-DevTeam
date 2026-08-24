@@ -81,6 +81,12 @@ export default function Home() {
           </div>
         </section>
         <PersistedDashboard />
+        <section className="panel persisted" id="specialist-registry">
+          <div className="section-head"><div><span className="label">E1 SIMULATED REGISTRY VIEW</span><h2>Specialist lifecycle</h2></div><strong>Laboratory validation blocked</strong></div>
+          <article><div><strong>Financial controls specialist · v2.0.0</strong><small>Candidate package · expires 2027-01-01 · limitations: jurisdiction-specific</small></div><span>CANDIDATE</span><em>Evaluation required</em></article>
+          <article><div><strong>Evidence and provenance</strong><small>Source, retrieval date, validity interval, license, content digest and evaluation digest are retained by contract</small></div><span>Fail closed</span><em>No activation without independent evaluation</em></article>
+          <h3>Rollback history</h3><p>No real laboratory canary has run. Exact prior-version rollback records appear here only after control-plane evidence is retained.</p>
+        </section>
         <div className="two-col">
           <section id="agents" className="panel agents"><div className="section-head"><div><span className="label">TEAM COMPOSITION</span><h2>Representative agents</h2></div><button className="text-btn">Agent Center →</button></div>
             <div className="agent-list">{agents.map(([code,name,work,status]) => <div className="agent" key={code}><span className="agent-avatar">{code}</span><div><strong>{name}</strong><small>{work}</small></div><i className={status}></i></div>)}</div>
